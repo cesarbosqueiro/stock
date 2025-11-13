@@ -3,6 +3,8 @@
 namespace App\Filament\Widgets;
 
 use App\Models\StockMovement;
+use Filament\Actions\ViewAction;
+use Filament\Schemas\Components\View;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Relations\Relation;
 use Filament\Tables;

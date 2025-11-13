@@ -2,6 +2,8 @@
 
 namespace App\Filament\Resources\Products;
 
+use App\Filament\Clusters\Estoque;
+
 use App\Filament\Resources\Products\Pages\CreateProduct;
 use App\Filament\Resources\Products\Pages\EditProduct;
 use App\Filament\Resources\Products\Pages\ListProducts;
@@ -17,6 +19,8 @@ use Filament\Tables\Table;
 class ProductResource extends Resource
 {
     protected static ?string $model = Product::class;
+
+    protected static ?string $cluster = Estoque::class;
 
     protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedInboxStack;
 

@@ -2,6 +2,8 @@
 
 namespace App\Filament\Resources\UnitMeasurements;
 
+use App\Filament\Clusters\Configuracoes;
+
 use App\Filament\Resources\UnitMeasurements\Pages\CreateUnitMeasurement;
 use App\Filament\Resources\UnitMeasurements\Pages\EditUnitMeasurement;
 use App\Filament\Resources\UnitMeasurements\Pages\ListUnitMeasurements;
@@ -17,6 +19,8 @@ use Filament\Tables\Table;
 class UnitMeasurementResource extends Resource
 {
     protected static ?string $model = UnitMeasurement::class;
+
+    protected static ?string $cluster = Configuracoes::class;
 
     protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedCircleStack;
 

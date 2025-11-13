@@ -37,9 +37,9 @@ class InventoryStatsOverview extends BaseWidget
 
         $today = Carbon::today();
         $startOfMonth = Carbon::now()->startOfMonth();
-
         $movementsToday = StockMovement::query()->whereDate('movement_date', $today)->count();
         $movementsMonth = StockMovement::query()->whereBetween('movement_date', [$startOfMonth, Carbon::now()])->count();
+        $saidasNoMes = StockMovement::query()->whereDate('movement_date', $startOfMonth)->count();
 
         return [
             BaseWidget\Stat::make('Produtos (ativos/total)', $activeProducts . ' / ' . $totalProducts)
@@ -63,6 +63,10 @@ class InventoryStatsOverview extends BaseWidget
                 ->icon('heroicon-o-arrow-path'),
 
             BaseWidget\Stat::make('Movimentações no mês', (string) $movementsMonth)
+                ->description('Período: mês atual')
+                ->color('info')
+                ->icon('heroicon-o-calendar-days'),
+            BaseWidget\Stat::make('Valor total de saidas', (string) $saidasNoMes)
                 ->description('Período: mês atual')
                 ->color('info')
                 ->icon('heroicon-o-calendar-days'),

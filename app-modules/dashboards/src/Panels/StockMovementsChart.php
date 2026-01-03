@@ -12,7 +12,9 @@ class StockMovementsChart extends ChartWidget
 
     protected ?string $pollingInterval = '60s';
 
-    protected int | string | array $columnSpan = 'full';
+    protected int|string|array $columnSpan = 'full';
+
+    #[\Override]
     protected function getData(): array
     {
         $start = Carbon::now()->subDays(29)->startOfDay();

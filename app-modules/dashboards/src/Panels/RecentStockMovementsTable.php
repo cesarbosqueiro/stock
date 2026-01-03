@@ -28,13 +28,11 @@ class RecentStockMovementsTable extends BaseWidget
                 ->sortable(),
             TextColumn::make('type')
                 ->label('Tipo')
-                ->formatStateUsing(function ($state) {
-                    return match ($state) {
-                        StockMovement::TYPE_ENTRY => 'Entrada',
-                        StockMovement::TYPE_EXIT => 'Saída',
-                        StockMovement::TYPE_ADJUSTMENT => 'Ajuste',
-                        default => $state,
-                    };
+                ->formatStateUsing(fn($state) => match ($state) {
+                    StockMovement::TYPE_ENTRY => 'Entrada',
+                    StockMovement::TYPE_EXIT => 'Saída',
+                    StockMovement::TYPE_ADJUSTMENT => 'Ajuste',
+                    default => $state,
                 })
                 ->badge()
                 ->colors([

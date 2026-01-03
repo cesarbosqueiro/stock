@@ -3,7 +3,6 @@
 namespace App\Filament\Resources\ProductStocks;
 
 use App\Filament\Clusters\Estoque;
-
 use App\Filament\Resources\ProductStocks\Pages\CreateProductStock;
 use App\Filament\Resources\ProductStocks\Pages\EditProductStock;
 use App\Filament\Resources\ProductStocks\Pages\ListProductStocks;
@@ -26,16 +25,19 @@ class ProductStockResource extends Resource
 
     protected static ?string $modelLabel = 'Estoque';
 
+    #[\Override]
     public static function form(Schema $schema): Schema
     {
         return ProductStockForm::configure($schema);
     }
 
+    #[\Override]
     public static function table(Table $table): Table
     {
         return ProductStocksTable::configure($table);
     }
 
+    #[\Override]
     public static function getRelations(): array
     {
         return [

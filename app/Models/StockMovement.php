@@ -2,9 +2,9 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use Illuminate\Database\Eloquent\Builder;
 
 class StockMovement extends Model
 {
@@ -31,7 +31,9 @@ class StockMovement extends Model
      * Tipos de movimentação
      */
     const string TYPE_ENTRY = 'entry';
+
     const string TYPE_EXIT = 'exit';
+
     const string TYPE_ADJUSTMENT = 'adjustment';
 
     /**
@@ -53,15 +55,16 @@ class StockMovement extends Model
     /**
      * Boot do model para calcular total_value automaticamente
      */
+    #[\Override]
     protected static function booted(): void
     {
-        static::saving(function (StockMovement $movement) {
+        static::saving(function (StockMovement $movement): void {
             if ($movement->unit_price && $movement->quantity) {
                 $movement->total_value = abs($movement->quantity) * $movement->unit_price;
             }
         });
 
-        static::created(function (StockMovement $movement) {
+        static::created(function (StockMovement $movement): void {
             $movement->updateProductStock();
         });
     }
@@ -76,7 +79,7 @@ class StockMovement extends Model
             ['quantity' => 0]
         );
 
-        match($this->type) {
+        match ($this->type) {
             self::TYPE_ENTRY => $stock->addQuantity($this->quantity),
             self::TYPE_EXIT => $stock->removeQuantity(abs($this->quantity)),
             self::TYPE_ADJUSTMENT => $stock->setQuantity($this->quantity),

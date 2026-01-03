@@ -2,11 +2,11 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
-use Illuminate\Database\Eloquent\Builder;
 
 class Product extends Model
 {
@@ -86,7 +86,7 @@ class Product extends Model
      */
     public function scopeLowStock(Builder $query): Builder
     {
-        return $query->whereHas('stock', function ($q) {
+        return $query->whereHas('stock', function ($q): void {
             $q->whereRaw('quantity < products.minimum_stock');
         });
     }

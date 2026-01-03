@@ -2,8 +2,8 @@
 
 namespace App\Filament\Resources\Categories\Schemas;
 
-use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\Textarea;
+use Filament\Forms\Components\TextInput;
 use Filament\Schemas\Components\Section;
 use Filament\Schemas\Schema;
 
@@ -15,12 +15,12 @@ class CategoryForm
             ->components([
                 Section::make([
                     TextInput::make('name')
-                    ->label('Nome')
-                    ->required(),])->columnSpanFull(),
+                        ->label('Nome')
+                        ->required(), ])->columnSpanFull(),
                 Section::make([
                     Textarea::make('description')
-                        ->label('Descricao')
-                ])->columnSpanFull()
+                        ->label('Descricao'),
+                ])->columnSpanFull(),
             ]);
     }
 }

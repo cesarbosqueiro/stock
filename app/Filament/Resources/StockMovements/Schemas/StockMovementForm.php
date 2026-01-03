@@ -4,8 +4,8 @@ namespace App\Filament\Resources\StockMovements\Schemas;
 
 use Filament\Forms\Components\DatePicker;
 use Filament\Forms\Components\Select;
-use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\Textarea;
+use Filament\Forms\Components\TextInput;
 use Filament\Schemas\Components\Section;
 use Filament\Schemas\Components\Utilities\Get;
 use Filament\Schemas\Components\Utilities\Set;
@@ -19,39 +19,39 @@ class StockMovementForm
             ->components([
                 Section::make('Informacoes do produto')
                     ->schema([
-                    Select::make('product_id')
-                        ->label('Produto')
-                        ->relationship(
-                            name: 'product',
-                            titleAttribute: 'name',
-                            modifyQueryUsing: fn ($query) => $query->where('is_active', true)
-                        )
-                        ->searchable()
-                        ->preload()
-                        ->required()
-                        ->columnSpanFull(),
-                    Select::make('type')
-                        ->label('Tipo de Movimentação')
-                        ->options([
-                            'entry' => 'Entrada',
-                            'exit' => 'Saída',
-                            'adjustment' => 'Ajuste',
-                        ])
-                        ->required()
-                        ->native(false),]),
+                        Select::make('product_id')
+                            ->label('Produto')
+                            ->relationship(
+                                name: 'product',
+                                titleAttribute: 'name',
+                                modifyQueryUsing: fn ($query) => $query->where('is_active', true)
+                            )
+                            ->searchable()
+                            ->preload()
+                            ->required()
+                            ->columnSpanFull(),
+                        Select::make('type')
+                            ->label('Tipo de Movimentação')
+                            ->options([
+                                'entry' => 'Entrada',
+                                'exit' => 'Saída',
+                                'adjustment' => 'Ajuste',
+                            ])
+                            ->required()
+                            ->native(false), ]),
                 Section::make('Informacoes unitarias')
                     ->schema([
-                    TextInput::make('quantity')
-                        ->label('Quantidade')
-                        ->required()
-                        ->numeric()
-                        ->minValue(0.01)
-                        ->step(0.01)
-                        ->live(onBlur: true),
-                    TextInput::make('unit_price')
-                        ->prefix('R$')
-                        ->label('Valor por unidade')
-                        ->numeric()
+                        TextInput::make('quantity')
+                            ->label('Quantidade')
+                            ->required()
+                            ->numeric()
+                            ->minValue(0.01)
+                            ->step(0.01)
+                            ->live(onBlur: true),
+                        TextInput::make('unit_price')
+                            ->prefix('R$')
+                            ->label('Valor por unidade')
+                            ->numeric(),
                     ]),
                 Section::make('Informações Adicionais')
                     ->schema([
@@ -69,27 +69,26 @@ class StockMovementForm
                     ->collapsible(),
                 Section::make('Informacoes fixas')
                     ->schema([
-                    DatePicker::make('movement_date')
-                        ->label('Data da Movimentacao')
-                        ->default(now())
-                        ->required()
-                        ->disabled()
-                        ->dehydrated(),
-                    Select::make('user_id')
-                        ->label('Usuario')
-                        ->relationship('user', 'name')
-                        ->default(auth()->id())
-                        ->disabled()
-                        ->dehydrated()
-                        ->required(),
-                    TextInput::make('total_value')
-                        ->label('Valor total')
-                        ->prefix('R$')
-                        ->disabled()
-                        ->afterStateUpdated(fn ($state, Get $get, Set $set) =>
-                        self::calculateTotal($get, $set)
-                        )
-                        ->numeric(),
+                        DatePicker::make('movement_date')
+                            ->label('Data da Movimentacao')
+                            ->default(now())
+                            ->required()
+                            ->disabled()
+                            ->dehydrated(),
+                        Select::make('user_id')
+                            ->label('Usuario')
+                            ->relationship('user', 'name')
+                            ->default(auth()->id())
+                            ->disabled()
+                            ->dehydrated()
+                            ->required(),
+                        TextInput::make('total_value')
+                            ->label('Valor total')
+                            ->prefix('R$')
+                            ->disabled()
+                            ->afterStateUpdated(fn ($state, Get $get, Set $set) => self::calculateTotal($get, $set)
+                            )
+                            ->numeric(),
                     ]),
             ]);
     }

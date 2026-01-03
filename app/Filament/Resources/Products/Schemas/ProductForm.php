@@ -2,10 +2,9 @@
 
 namespace App\Filament\Resources\Products\Schemas;
 
-use Carbon\Carbon;
 use Filament\Forms\Components\Select;
-use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\Textarea;
+use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\Toggle;
 use Filament\Schemas\Components\Section;
 use Filament\Schemas\Schema;
@@ -24,7 +23,7 @@ class ProductForm
                         ->label('Descricao')
                         ->columnSpanFull(),
                 ]),
-                Section::make([                TextInput::make('code')
+                Section::make([TextInput::make('code')
                     ->label('Codigo')
                     ->required(),
                     Select::make('category_id')
@@ -34,7 +33,7 @@ class ProductForm
                     Toggle::make('is_active')
                         ->label('Ativo')
                         ->required(),
-                    ]),
+                ]),
                 Section::make([
                     Select::make('unit_measurement_id')
                         ->label('Unidade de medida')
@@ -45,7 +44,7 @@ class ProductForm
                         ->required()
                         ->numeric()
                         ->default(0),
-                ])
+                ]),
             ]);
     }
 }

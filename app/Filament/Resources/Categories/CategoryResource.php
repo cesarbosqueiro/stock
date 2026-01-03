@@ -3,7 +3,6 @@
 namespace App\Filament\Resources\Categories;
 
 use App\Filament\Clusters\Configuracoes;
-
 use App\Filament\Resources\Categories\Pages\CreateCategory;
 use App\Filament\Resources\Categories\Pages\EditCategory;
 use App\Filament\Resources\Categories\Pages\ListCategories;
@@ -15,8 +14,6 @@ use Filament\Resources\Resource;
 use Filament\Schemas\Schema;
 use Filament\Support\Icons\Heroicon;
 use Filament\Tables\Table;
-use Illuminate\Contracts\Support\Htmlable;
-use Illuminate\Database\Eloquent\Model;
 
 class CategoryResource extends Resource
 {
@@ -25,18 +22,22 @@ class CategoryResource extends Resource
     protected static ?string $cluster = Configuracoes::class;
 
     protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedTag;
+
     protected static ?string $modelLabel = 'Categorias';
 
+    #[\Override]
     public static function form(Schema $schema): Schema
     {
         return CategoryForm::configure($schema);
     }
 
+    #[\Override]
     public static function table(Table $table): Table
     {
         return CategoriesTable::configure($table);
     }
 
+    #[\Override]
     public static function getRelations(): array
     {
         return [

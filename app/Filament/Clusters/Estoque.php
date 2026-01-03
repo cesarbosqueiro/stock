@@ -12,5 +12,4 @@ class Estoque extends Cluster
     protected static ?string $title = 'Estoque';
 
     protected static ?int $navigationSort = 1;
-
 }

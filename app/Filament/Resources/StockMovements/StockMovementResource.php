@@ -3,7 +3,6 @@
 namespace App\Filament\Resources\StockMovements;
 
 use App\Filament\Clusters\Estoque;
-
 use App\Filament\Resources\StockMovements\Pages\CreateStockMovement;
 use App\Filament\Resources\StockMovements\Pages\EditStockMovement;
 use App\Filament\Resources\StockMovements\Pages\ListStockMovements;
@@ -26,16 +25,19 @@ class StockMovementResource extends Resource
 
     protected static ?string $modelLabel = 'Movimentacoes';
 
+    #[\Override]
     public static function form(Schema $schema): Schema
     {
         return StockMovementForm::configure($schema);
     }
 
+    #[\Override]
     public static function table(Table $table): Table
     {
         return StockMovementsTable::configure($table);
     }
 
+    #[\Override]
     public static function getRelations(): array
     {
         return [

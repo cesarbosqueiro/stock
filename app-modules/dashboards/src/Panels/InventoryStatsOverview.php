@@ -10,11 +10,11 @@ use App\Models\StockMovement;
 use Filament\Widgets\StatsOverviewWidget as BaseWidget;
 use Illuminate\Support\Carbon;
 
-
 class InventoryStatsOverview extends BaseWidget
 {
     protected ?string $pollingInterval = '60s';
 
+    #[\Override]
     protected function getCards(): array
     {
         $totalProducts = Product::query()->count();
@@ -34,6 +34,7 @@ class InventoryStatsOverview extends BaseWidget
                     ->value('unit_price');
 
                 $price = $lastPrice ?? 0;
+
                 return ($row->quantity ?? 0) * (float) $price;
             })->sum();
 
@@ -44,7 +45,7 @@ class InventoryStatsOverview extends BaseWidget
         $saidasNoMes = StockMovement::query()->whereDate('movement_date', $startOfMonth)->count();
 
         return [
-            BaseWidget\Stat::make('Produtos (ativos/total)', $activeProducts . ' / ' . $totalProducts)
+            BaseWidget\Stat::make('Produtos (ativos/total)', $activeProducts.' / '.$totalProducts)
                 ->description('Produtos cadastrados e ativos')
                 ->color('success')
                 ->icon('heroicon-o-cube'),
@@ -54,7 +55,7 @@ class InventoryStatsOverview extends BaseWidget
                 ->color($lowStockProducts > 0 ? 'warning' : 'success')
                 ->icon('heroicon-o-exclamation-triangle'),
 
-            BaseWidget\Stat::make('Valor total em estoque', 'R$ ' . number_format($stockValues, 2, ',', '.'))
+            BaseWidget\Stat::make('Valor total em estoque', 'R$ '.number_format($stockValues, 2, ',', '.'))
                 ->description('Estimado pelo último preço conhecido')
                 ->color('primary')
                 ->icon('heroicon-o-banknotes'),

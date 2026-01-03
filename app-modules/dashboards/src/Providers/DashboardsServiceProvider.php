@@ -6,11 +6,8 @@ use Illuminate\Support\ServiceProvider;
 
 class DashboardsServiceProvider extends ServiceProvider
 {
-	public function register(): void
-	{
-	}
-	
-	public function boot(): void
-	{
-	}
+    #[\Override]
+    public function register(): void {}
+
+    public function boot(): void {}
 }

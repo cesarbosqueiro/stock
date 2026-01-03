@@ -54,8 +54,7 @@ class ProductStocksTable
                     ->icon(Heroicon::OutlinedScale)
                     ->iconColor('success')
                     ->weight('bold')
-                    ->color(fn ($record): string =>
-                    $record->quantity < $record->product->minimum_stock ? 'danger' : 'success'
+                    ->color(fn ($record): string => $record->quantity < $record->product->minimum_stock ? 'danger' : 'success'
                     ),
 
                 TextColumn::make('product.unit_measurement.abbreviation')
@@ -74,14 +73,11 @@ class ProductStocksTable
                 TextColumn::make('status')
                     ->label('Status')
                     ->badge()
-                    ->formatStateUsing(fn ($record): string =>
-                    $record->quantity < $record->product->minimum_stock ? 'Baixo' : 'Normal'
+                    ->formatStateUsing(fn ($record): string => $record->quantity < $record->product->minimum_stock ? 'Baixo' : 'Normal'
                     )
-                    ->color(fn ($record): string =>
-                    $record->quantity < $record->product->minimum_stock ? 'danger' : 'success'
+                    ->color(fn ($record): string => $record->quantity < $record->product->minimum_stock ? 'danger' : 'success'
                     )
-                    ->icon(fn ($record): Heroicon =>
-                    $record->quantity < $record->product->minimum_stock
+                    ->icon(fn ($record): Heroicon => $record->quantity < $record->product->minimum_stock
                         ? Heroicon::OutlinedExclamationCircle
                         : Heroicon::OutlinedCheckCircle
                     ),
@@ -115,10 +111,10 @@ class ProductStocksTable
                     ->trueLabel('Apenas estoque baixo')
                     ->falseLabel('Apenas estoque normal')
                     ->queries(
-                        true: fn ($query) => $query->whereHas('product', function ($q) {
+                        true: fn ($query) => $query->whereHas('product', function ($q): void {
                             $q->whereRaw('product_stocks.quantity < products.minimum_stock');
                         }),
-                        false: fn ($query) => $query->whereHas('product', function ($q) {
+                        false: fn ($query) => $query->whereHas('product', function ($q): void {
                             $q->whereRaw('product_stocks.quantity >= products.minimum_stock');
                         }),
                     ),

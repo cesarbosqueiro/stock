@@ -67,6 +67,7 @@ class ProductsTable
                         if ($stock < ($record->minimum_stock ?? 0)) {
                             return 'warning';
                         }
+
                         return 'success';
                     })
                     ->weight('bold'),
@@ -98,9 +99,7 @@ class ProductsTable
                     ->dateTime('d/m/Y H:i')
                     ->sortable()
                     ->since()
-                    ->description(function ($record): string {
-                        return $record->updated_at->format('d/m/Y H:i');
-                    })
+                    ->description(fn($record): string => $record->updated_at->format('d/m/Y H:i'))
                     ->icon(Heroicon::OutlinedClock)
                     ->toggleable(isToggledHiddenByDefault: true),
             ])
@@ -131,14 +130,14 @@ class ProductsTable
                     ->trueLabel('Apenas estoque baixo')
                     ->falseLabel('Apenas estoque normal')
                     ->queries(
-                        true: function ($query) {
-                            $query->whereHas('stock', function ($q) {
+                        true: function ($query): void {
+                            $query->whereHas('stock', function ($q): void {
                                 $q->whereRaw('product_stocks.quantity < products.minimum_stock')
                                     ->orWhereRaw('product_stocks.quantity = 0');
                             });
                         },
-                        false: function ($query) {
-                            $query->whereHas('stock', function ($q) {
+                        false: function ($query): void {
+                            $query->whereHas('stock', function ($q): void {
                                 $q->whereRaw('product_stocks.quantity >= products.minimum_stock');
                             });
                         },

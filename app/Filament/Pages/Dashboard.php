@@ -2,10 +2,10 @@
 
 namespace App\Filament\Pages;
 
-use App\Filament\Widgets\InventoryStatsOverview;
-use App\Filament\Widgets\RecentStockMovementsTable;
-use App\Filament\Widgets\StockMovementsChart;
 use Filament\Pages\Dashboard as BaseDashboard;
+use Memphis\Dashboards\Panels\InventoryStatsOverview;
+use Memphis\Dashboards\Panels\RecentStockMovementsTable;
+use Memphis\Dashboards\Panels\StockMovementsChart;
 
 class Dashboard extends BaseDashboard
 {

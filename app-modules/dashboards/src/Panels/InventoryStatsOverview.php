@@ -1,6 +1,8 @@
 <?php
 
-namespace App\Filament\Widgets;
+declare(strict_types=1);
+
+namespace Memphis\Dashboards\Panels;
 
 use App\Models\Product;
 use App\Models\ProductStock;

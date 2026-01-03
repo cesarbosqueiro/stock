@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Filament\Widgets;
+namespace Memphis\Dashboards\Panels;
 
 use App\Models\StockMovement;
 use Filament\Widgets\ChartWidget;

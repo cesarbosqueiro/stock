@@ -1,15 +1,12 @@
 <?php
 
-namespace App\Filament\Widgets;
+namespace Memphis\Dashboards\Panels;
 
 use App\Models\StockMovement;
-use Filament\Actions\ViewAction;
-use Filament\Schemas\Components\View;
-use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\Relations\Relation;
-use Filament\Tables;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Widgets\TableWidget as BaseWidget;
+use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Relations\Relation;
 
 class RecentStockMovementsTable extends BaseWidget
 {

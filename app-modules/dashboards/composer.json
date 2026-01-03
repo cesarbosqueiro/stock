@@ -1,0 +1,24 @@
+{
+	"name": "memphis/dashboards",
+	"description": "",
+	"type": "library",
+	"version": "1.0",
+	"license": "proprietary",
+	"require": {},
+	"autoload": {
+		"psr-4": {
+			"Memphis\\Dashboards\\": "src/",
+			"Memphis\\Dashboards\\Tests\\": "tests/",
+			"Memphis\\Dashboards\\Database\\Factories\\": "database/factories/",
+			"Memphis\\Dashboards\\Database\\Seeders\\": "database/seeders/"
+		}
+	},
+	"minimum-stability": "stable",
+	"extra": {
+		"laravel": {
+			"providers": [
+				"Memphis\\Dashboards\\Providers\\DashboardsServiceProvider"
+			]
+		}
+	}
+}

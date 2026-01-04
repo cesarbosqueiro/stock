@@ -7,8 +7,6 @@ use Illuminate\Contracts\Support\Htmlable;
 use Memphis\Dashboards\Panels\Filament\InventoryCard;
 use Memphis\Dashboards\Panels\Filament\RecentStockMovementCard;
 use Memphis\Dashboards\Panels\Filament\StockMovementsCard;
-use Memphis\Dashboards\Panels\RecentStockMovementsTable;
-use Memphis\Dashboards\Panels\StockMovementsStats;
 
 final class Dashboard extends BaseDashboard
 {

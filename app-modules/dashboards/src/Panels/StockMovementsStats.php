@@ -35,6 +35,7 @@ class StockMovementsStats
         return self::days()
             ->map(fn ($d) => (int) (self::exits()[$d] ?? 0));
     }
+
     public static function getCardLabels(): Collection
     {
         return self::days()

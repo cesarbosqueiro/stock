@@ -13,6 +13,7 @@ class StockMovementsCard extends ChartWidget
 
     protected int|string|array $columnSpan = 'full';
 
+    #[\Override]
     protected function getData(): array
     {
         return [

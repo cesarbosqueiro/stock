@@ -2,16 +2,14 @@
 
 namespace App\Providers\Filament;
 
+use BezhanSalleh\FilamentShield\FilamentShieldPlugin;
 use Filament\Actions\Action;
 use Filament\Http\Middleware\Authenticate;
-use BezhanSalleh\FilamentShield\FilamentShieldPlugin;
 use Filament\Http\Middleware\AuthenticateSession;
 use Filament\Http\Middleware\DisableBladeIconComponents;
 use Filament\Http\Middleware\DispatchServingFilamentEvent;
 use Filament\Panel;
 use Filament\PanelProvider;
-use Openplain\FilamentShadcnTheme\Color;
-use Filament\Support\Colors\Color as FilamentColor;
 use Filament\Widgets\AccountWidget;
 use Filament\Widgets\FilamentInfoWidget;
 use Illuminate\Cookie\Middleware\AddQueuedCookiesToResponse;
@@ -23,6 +21,7 @@ use Illuminate\View\Middleware\ShareErrorsFromSession;
 use Joaopaulolndev\FilamentEditProfile\FilamentEditProfilePlugin;
 use Joaopaulolndev\FilamentEditProfile\Pages\EditProfilePage;
 use Memphis\Dashboards\Dashboard;
+use Openplain\FilamentShadcnTheme\Color;
 
 class AdminPanelProvider extends PanelProvider
 {
@@ -35,12 +34,12 @@ class AdminPanelProvider extends PanelProvider
             ->login()
             ->userMenuItems([
                 'profile' => Action::make('profile')
-                    ->label(fn() => auth()->user()->name)
+                    ->label(fn () => auth()->user()->name)
                     ->url(fn (): string => EditProfilePage::getUrl())
-                    ->icon('heroicon-m-user-circle')
+                    ->icon('heroicon-m-user-circle'),
             ])
             ->colors([
-                'primary' => Color::Default
+                'primary' => Color::Default,
             ])
             ->discoverResources(in: app_path('Filament/Resources'), for: 'App\Filament\Resources')
             ->discoverClusters(in: app_path('Filament/Clusters'), for: 'App\Filament\Clusters')
@@ -68,7 +67,7 @@ class AdminPanelProvider extends PanelProvider
                     ->navigationGroup('Administracao'),
                 FilamentEditProfilePlugin::make()
                     ->shouldShowDeleteAccountForm(false)
-                    ->shouldRegisterNavigation(false)
+                    ->shouldRegisterNavigation(false),
             ])
             ->authMiddleware([
                 Authenticate::class,

@@ -2,7 +2,6 @@
 
 namespace App\Filament\Resources\UnitMeasurements;
 
-use App\Filament\Clusters\Configuracoes;
 use App\Filament\Resources\UnitMeasurements\Pages\CreateUnitMeasurement;
 use App\Filament\Resources\UnitMeasurements\Pages\EditUnitMeasurement;
 use App\Filament\Resources\UnitMeasurements\Pages\ListUnitMeasurements;

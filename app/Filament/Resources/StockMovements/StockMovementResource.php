@@ -2,7 +2,6 @@
 
 namespace App\Filament\Resources\StockMovements;
 
-use App\Filament\Clusters\Estoque;
 use App\Filament\Resources\StockMovements\Pages\CreateStockMovement;
 use App\Filament\Resources\StockMovements\Pages\EditStockMovement;
 use App\Filament\Resources\StockMovements\Pages\ListStockMovements;

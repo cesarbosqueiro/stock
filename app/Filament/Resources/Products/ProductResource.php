@@ -2,7 +2,6 @@
 
 namespace App\Filament\Resources\Products;
 
-use App\Filament\Clusters\Estoque;
 use App\Filament\Resources\Products\Pages\CreateProduct;
 use App\Filament\Resources\Products\Pages\EditProduct;
 use App\Filament\Resources\Products\Pages\ListProducts;

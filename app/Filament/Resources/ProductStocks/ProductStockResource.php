@@ -2,7 +2,6 @@
 
 namespace App\Filament\Resources\ProductStocks;
 
-use App\Filament\Clusters\Estoque;
 use App\Filament\Resources\ProductStocks\Pages\CreateProductStock;
 use App\Filament\Resources\ProductStocks\Pages\EditProductStock;
 use App\Filament\Resources\ProductStocks\Pages\ListProductStocks;

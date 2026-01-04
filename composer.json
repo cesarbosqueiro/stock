@@ -12,9 +12,11 @@
         "bezhansalleh/filament-shield": "^4.0",
         "filament/filament": "^4.4.0",
         "internachi/modular": "^2.3",
+        "joaopaulolndev/filament-edit-profile": "^2.0",
         "laravel/framework": "^12.0",
         "laravel/tinker": "^2.10.1",
-        "memphis/dashboards": "*"
+        "memphis/dashboards": "*",
+        "openplain/filament-shadcn-theme": "^1.0"
     },
     "require-dev": {
         "fakerphp/faker": "^1.23",

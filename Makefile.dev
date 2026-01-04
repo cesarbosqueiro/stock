@@ -1,0 +1,345 @@
+# Memphis Admin - Development Makefile
+# ============================================================================
+# Usage: make -f Makefile.dev <target>
+# Or rename to 'Makefile' in your dev environment
+# Run 'make help' to see all available commands
+# ============================================================================
+
+# Variables
+COMPOSE = docker compose -f compose.dev.yaml
+EXEC = $(COMPOSE) exec workspace
+ARTISAN = $(EXEC) php artisan
+
+# Colors
+YELLOW := \033[1;33m
+GREEN := \033[1;32m
+CYAN := \033[1;36m
+RESET := \033[0m
+
+.DEFAULT_GOAL := help
+
+.PHONY: help
+help: ## Show this help
+	@echo ""
+	@echo "$(CYAN)Memphis Admin - Development Commands$(RESET)"
+	@echo ""
+	@awk 'BEGIN {FS = ":.*##"} /^[a-zA-Z_-]+:.*##/ { printf "  $(GREEN)%-20s$(RESET) %s\n", $$1, $$2 }' $(MAKEFILE_LIST)
+	@echo ""
+
+# ============================================================================
+# Docker
+# ============================================================================
+
+.PHONY: up down restart build logs ps shell
+
+up: ## Start containers
+	$(COMPOSE) up -d
+
+down: ## Stop containers
+	$(COMPOSE) down
+
+restart: down up ## Restart containers
+
+build: ## Rebuild containers
+	$(COMPOSE) up -d --build
+
+logs: ## View logs (follow)
+	$(COMPOSE) logs -f
+
+logs-%: ## View specific service logs (e.g., make logs-php-fpm)
+	$(COMPOSE) logs -f $*
+
+ps: ## List containers
+	$(COMPOSE) ps
+
+shell: ## Access workspace shell
+	$(EXEC) bash
+
+# ============================================================================
+# Setup
+# ============================================================================
+
+.PHONY: setup install fresh
+
+setup: ## Full project setup (first time)
+	@echo "$(YELLOW)Setting up Memphis Admin...$(RESET)"
+	cp -n .env.example .env || true
+	$(COMPOSE) up -d --build
+	$(EXEC) composer install
+	$(EXEC) npm install
+	$(ARTISAN) key:generate
+	$(ARTISAN) migrate --seed
+	$(EXEC) npm run build
+	@echo "$(GREEN)Setup complete! Access: http://localhost$(RESET)"
+
+install: ## Install all dependencies
+	$(EXEC) composer install
+	$(EXEC) npm install
+
+fresh: ## Fresh install (rebuild + migrate:fresh + seed)
+	$(COMPOSE) up -d --build
+	$(ARTISAN) migrate:fresh --seed
+	$(EXEC) npm run build
+
+# ============================================================================
+# Laravel - Artisan
+# ============================================================================
+
+.PHONY: migrate migrate-fresh migrate-seed seed rollback tinker routes
+
+migrate: ## Run migrations
+	$(ARTISAN) migrate
+
+migrate-fresh: ## Drop all tables and re-run migrations
+	$(ARTISAN) migrate:fresh
+
+migrate-seed: ## Migrations with seeders
+	$(ARTISAN) migrate --seed
+
+seed: ## Run seeders
+	$(ARTISAN) db:seed
+
+rollback: ## Rollback last migration
+	$(ARTISAN) migrate:rollback
+
+tinker: ## Laravel Tinker REPL
+	$(ARTISAN) tinker
+
+routes: ## List routes
+	$(ARTISAN) route:list
+
+# ============================================================================
+# Cache
+# ============================================================================
+
+.PHONY: cache-clear optimize-clear
+
+cache-clear: ## Clear all caches
+	$(ARTISAN) cache:clear
+	$(ARTISAN) config:clear
+	$(ARTISAN) route:clear
+	$(ARTISAN) view:clear
+	$(ARTISAN) event:clear
+
+optimize-clear: ## Clear optimizations
+	$(ARTISAN) optimize:clear
+
+# ============================================================================
+# Queue & Schedule
+# ============================================================================
+
+.PHONY: queue queue-restart queue-failed schedule horizon
+
+queue: ## Start queue worker
+	$(ARTISAN) queue:work --verbose
+
+queue-restart: ## Restart queue workers
+	$(ARTISAN) queue:restart
+
+queue-failed: ## List failed jobs
+	$(ARTISAN) queue:failed
+
+queue-retry: ## Retry all failed jobs
+	$(ARTISAN) queue:retry all
+
+schedule: ## Run scheduler once
+	$(ARTISAN) schedule:run
+
+horizon: ## Start Horizon (if installed)
+	$(ARTISAN) horizon
+
+# ============================================================================
+# Filament
+# ============================================================================
+
+.PHONY: filament-user filament-assets filament-upgrade
+
+filament-user: ## Create Filament admin user
+	$(ARTISAN) make:filament-user
+
+filament-resource: ## Create resource (usage: make filament-resource name=User)
+	$(ARTISAN) make:filament-resource $(name)
+
+filament-resource-simple: ## Create simple resource (usage: make filament-resource-simple name=User)
+	$(ARTISAN) make:filament-resource $(name) --simple
+
+filament-resource-generate: ## Generate resource from model (usage: make filament-resource-generate name=User)
+	$(ARTISAN) make:filament-resource $(name) --generate
+
+filament-page: ## Create page (usage: make filament-page name=Settings)
+	$(ARTISAN) make:filament-page $(name)
+
+filament-widget: ## Create widget (usage: make filament-widget name=StatsOverview)
+	$(ARTISAN) make:filament-widget $(name)
+
+filament-relation: ## Create relation manager (usage: make filament-relation name=Posts resource=UserResource)
+	$(ARTISAN) make:filament-relation-manager $(resource) $(name)
+
+filament-assets: ## Publish Filament assets
+	$(ARTISAN) filament:assets
+
+filament-upgrade: ## Upgrade Filament
+	$(ARTISAN) filament:upgrade
+
+filament-cache: ## Clear/rebuild icon cache
+	$(ARTISAN) icons:clear
+	$(ARTISAN) icons:cache
+
+# ============================================================================
+# Assets
+# ============================================================================
+
+.PHONY: dev watch build-assets npm-install npm-update
+
+dev: ## Start Vite dev server
+	$(EXEC) npm run dev
+
+watch: dev ## Alias for dev
+
+build-assets: ## Build for production
+	$(EXEC) npm run build
+
+npm-install: ## Install NPM packages
+	$(EXEC) npm install
+
+npm-update: ## Update NPM packages
+	$(EXEC) npm update
+
+# ============================================================================
+# Composer
+# ============================================================================
+
+.PHONY: composer-install composer-update composer-dump
+
+composer-install: ## Install Composer packages
+	$(EXEC) composer install
+
+composer-update: ## Update Composer packages
+	$(EXEC) composer update
+
+composer-dump: ## Dump autoload
+	$(EXEC) composer dump-autoload -o
+
+composer-require: ## Require package (usage: make composer-require pkg=vendor/package)
+	$(EXEC) composer require $(pkg)
+
+composer-require-dev: ## Require dev package (usage: make composer-require-dev pkg=vendor/package)
+	$(EXEC) composer require --dev $(pkg)
+
+# ============================================================================
+# Testing & Quality
+# ============================================================================
+
+.PHONY: test test-coverage test-parallel test-filter pint pint-check phpstan ide-helper
+
+test: ## Run tests
+	$(ARTISAN) test
+
+test-coverage: ## Tests with coverage
+	$(ARTISAN) test --coverage
+
+test-parallel: ## Tests in parallel
+	$(ARTISAN) test --parallel
+
+test-filter: ## Run specific test (usage: make test-filter filter=UserTest)
+	$(ARTISAN) test --filter=$(filter)
+
+pint: ## Fix code style
+	$(EXEC) ./vendor/bin/pint
+
+pint-check: ## Check code style
+	$(EXEC) ./vendor/bin/pint --test
+
+phpstan: ## Static analysis
+	$(EXEC) ./vendor/bin/phpstan analyse
+
+ide-helper: ## Generate IDE helper files
+	$(ARTISAN) ide-helper:generate
+	$(ARTISAN) ide-helper:models -N
+	$(ARTISAN) ide-helper:meta
+
+# ============================================================================
+# Database
+# ============================================================================
+
+.PHONY: db-fresh db-shell db-backup db-restore
+
+db-fresh: ## Fresh database with seeds
+	$(ARTISAN) migrate:fresh --seed
+
+db-shell: ## PostgreSQL shell
+	$(COMPOSE) exec postgres psql -U $${DB_USERNAME:-laravel} -d $${DB_DATABASE:-laravel}
+
+db-backup: ## Backup database
+	@mkdir -p backups
+	$(COMPOSE) exec postgres pg_dump -U $${DB_USERNAME:-laravel} $${DB_DATABASE:-laravel} > backups/backup_$$(date +%Y%m%d_%H%M%S).sql
+	@echo "$(GREEN)Backup saved to backups/$(RESET)"
+
+db-restore: ## Restore database (usage: make db-restore file=backups/backup.sql)
+	$(COMPOSE) exec -T postgres psql -U $${DB_USERNAME:-laravel} -d $${DB_DATABASE:-laravel} < $(file)
+
+# ============================================================================
+# Utilities
+# ============================================================================
+
+.PHONY: storage-link key-generate clean nuke
+
+storage-link: ## Create storage link
+	$(ARTISAN) storage:link
+
+key-generate: ## Generate app key
+	$(ARTISAN) key:generate
+
+clean: ## Clean caches and temp files
+	$(ARTISAN) optimize:clear
+	$(EXEC) rm -rf node_modules/.cache
+	@echo "$(GREEN)Cleaned!$(RESET)"
+
+nuke: ## Full reset (containers, volumes, caches)
+	$(COMPOSE) down -v --remove-orphans
+	@echo "$(YELLOW)All containers and volumes removed$(RESET)"
+
+# ============================================================================
+# Generators
+# ============================================================================
+
+.PHONY: make-model make-controller make-migration make-seeder make-factory make-request make-resource make-policy make-event make-listener make-job make-mail make-notification
+
+make-model: ## Create model (usage: make make-model name=Post opts="-mfsc")
+	$(ARTISAN) make:model $(name) $(opts)
+
+make-controller: ## Create controller (usage: make make-controller name=PostController)
+	$(ARTISAN) make:controller $(name)
+
+make-migration: ## Create migration (usage: make make-migration name=create_posts_table)
+	$(ARTISAN) make:migration $(name)
+
+make-seeder: ## Create seeder (usage: make make-seeder name=PostSeeder)
+	$(ARTISAN) make:seeder $(name)
+
+make-factory: ## Create factory (usage: make make-factory name=PostFactory)
+	$(ARTISAN) make:factory $(name)
+
+make-request: ## Create form request (usage: make make-request name=StorePostRequest)
+	$(ARTISAN) make:request $(name)
+
+make-resource: ## Create API resource (usage: make make-resource name=PostResource)
+	$(ARTISAN) make:resource $(name)
+
+make-policy: ## Create policy (usage: make make-policy name=PostPolicy)
+	$(ARTISAN) make:policy $(name)
+
+make-event: ## Create event (usage: make make-event name=PostCreated)
+	$(ARTISAN) make:event $(name)
+
+make-listener: ## Create listener (usage: make make-listener name=SendPostNotification)
+	$(ARTISAN) make:listener $(name)
+
+make-job: ## Create job (usage: make make-job name=ProcessPost)
+	$(ARTISAN) make:job $(name)
+
+make-mail: ## Create mailable (usage: make make-mail name=PostCreated)
+	$(ARTISAN) make:mail $(name)
+
+make-notification: ## Create notification (usage: make make-notification name=PostPublished)
+	$(ARTISAN) make:notification $(name)

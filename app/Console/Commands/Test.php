@@ -3,10 +3,6 @@
 namespace App\Console\Commands;
 
 use Illuminate\Console\Command;
-use Livewire\Component;
-use Memphis\Dashboards\Panels\InventoryStatsOverview;
-use Memphis\Dashboards\Panels\RecentStockMovementsTable;
-use Memphis\Dashboards\Panels\StockMovementsChart;
 
 class Test extends Command
 {
@@ -27,7 +23,5 @@ class Test extends Command
     /**
      * Execute the console command.
      */
-    public function handle()
-    {
-    }
+    public function handle() {}
 }

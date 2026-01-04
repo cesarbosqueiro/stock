@@ -99,7 +99,7 @@ class ProductsTable
                     ->dateTime('d/m/Y H:i')
                     ->sortable()
                     ->since()
-                    ->description(fn($record): string => $record->updated_at->format('d/m/Y H:i'))
+                    ->description(fn ($record): string => $record->updated_at->format('d/m/Y H:i'))
                     ->icon(Heroicon::OutlinedClock)
                     ->toggleable(isToggledHiddenByDefault: true),
             ])

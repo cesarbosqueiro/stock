@@ -1,6 +1,6 @@
 <?php
 
-namespace Memphis\Dashboards\Panels;
+namespace Memphis\Dashboards\Panels\Filament;
 
 use App\Models\StockMovement;
 use Filament\Tables\Columns\TextColumn;
@@ -8,7 +8,7 @@ use Filament\Widgets\TableWidget as BaseWidget;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Relations\Relation;
 
-class RecentStockMovementsTable extends BaseWidget
+class RecentStockMovementCard extends BaseWidget
 {
     protected static ?string $heading = 'Últimas movimentações';
 
@@ -28,7 +28,7 @@ class RecentStockMovementsTable extends BaseWidget
                 ->sortable(),
             TextColumn::make('type')
                 ->label('Tipo')
-                ->formatStateUsing(fn($state) => match ($state) {
+                ->formatStateUsing(fn ($state) => match ($state) {
                     StockMovement::TYPE_ENTRY => 'Entrada',
                     StockMovement::TYPE_EXIT => 'Saída',
                     StockMovement::TYPE_ADJUSTMENT => 'Ajuste',

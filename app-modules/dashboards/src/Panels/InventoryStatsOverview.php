@@ -28,7 +28,8 @@ class InventoryStatsOverview extends BaseWidget
             ->map(function ($row) {
                 $lastPrice = StockMovement::query()
                     ->where('product_id', $row->product_id)
-                    ->whereIn('type', [StockMovement::TYPE_ENTRY, StockMovement::TYPE_ADJUSTMENT])
+                    ->whereIn('type',
+                        [StockMovement::TYPE_ENTRY, StockMovement::TYPE_ADJUSTMENT])
                     ->whereNotNull('unit_price')
                     ->orderByDesc('movement_date')
                     ->value('unit_price');

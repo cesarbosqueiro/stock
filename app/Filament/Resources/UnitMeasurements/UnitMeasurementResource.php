@@ -19,8 +19,6 @@ class UnitMeasurementResource extends Resource
 {
     protected static ?string $model = UnitMeasurement::class;
 
-    protected static ?string $cluster = Configuracoes::class;
-
     protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedCircleStack;
 
     protected static ?string $modelLabel = 'Unidade de medida';

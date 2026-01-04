@@ -19,8 +19,6 @@ class ProductStockResource extends Resource
 {
     protected static ?string $model = ProductStock::class;
 
-    protected static ?string $cluster = Estoque::class;
-
     protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedBuildingOffice;
 
     protected static ?string $modelLabel = 'Estoque';

@@ -19,8 +19,6 @@ class StockMovementResource extends Resource
 {
     protected static ?string $model = StockMovement::class;
 
-    protected static ?string $cluster = Estoque::class;
-
     protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedRectangleStack;
 
     protected static ?string $modelLabel = 'Movimentacoes';

@@ -67,7 +67,7 @@ class CategoriesTable
                     DeleteBulkAction::make(),
                 ]),
             ])
-            ->defaultSort('name', 'asc')
+            ->defaultSort('name')
             ->striped()
             ->emptyStateHeading('Nenhuma categoria cadastrada')
             ->emptyStateDescription('Comece criando uma nova categoria de produtos.')
